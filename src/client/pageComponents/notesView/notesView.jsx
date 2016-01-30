@@ -5,9 +5,18 @@ import NoteListItem from './noteListItem.jsx';
 
 
 class NotesView extends React.Component {
+
     render() {
+        console.log(this.props.showNoteCreator);
         return (
-            <div styleName="notesView-container">
+            <div>
+                {
+                    this.props.showNoteCreator &&
+                    <div styleName="note-creator">
+                        RAWR
+                    </div>
+                }
+
                 <div styleName="notes-list">
                     {
                         this.props.notes.map((note) => {
@@ -28,7 +37,8 @@ class NotesView extends React.Component {
 
 NotesView.propTypes = {
     notes: React.PropTypes.arrayOf(React.PropTypes.object),
-    viewNoteFunction: React.PropTypes.func
+    viewNoteFunction: React.PropTypes.func,
+    showNoteCreator: React.PropTypes.bool
 };
 
 export default CSSModules(NotesView, styles);

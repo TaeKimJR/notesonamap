@@ -12,7 +12,7 @@ import NotesView from './pageComponents/notesView/notesView.jsx';
 class App extends React.Component {
     constructor() {
         super();
-        bindComponentFunction.call(this, 'viewNote', 'addNote');
+        bindComponentFunction.call(this, 'viewNote', 'addNote', 'openNoteCreator');
 
         // MOCKED DATA
         const notes = [
@@ -23,8 +23,15 @@ class App extends React.Component {
         ];
 
         this.state = {
-            notes
+            notes,
+            creatingNote: false
         };
+    }
+
+    openNoteCreator() {
+        this.setState({
+            creatingNote: true
+        });
     }
 
     addNote(text) {
@@ -42,12 +49,15 @@ class App extends React.Component {
         const foundNote = _.find(this.state.notes, (note) => {
             return note.id === noteId;
         });
+
+        console.log(foundNote.text);
     }
 
     render() {
         return (
             <div styleName="app-container">
                 <div styleName="header-container">
+                    <button onClick={this.openNoteCreator}> TEST: Open Note Creator </button>
                     <button onClick={this.addNote.bind(null, 'RAWR')}> TEST: Add Note </button>
                     <Header />
                 </div>
@@ -56,7 +66,11 @@ class App extends React.Component {
                         <MapView />
                     </div>
                     <div styleName="notesView-container">
-                        <NotesView notes={this.state.notes} viewNoteFunction={this.viewNote} />
+                        <NotesView
+                            notes={this.state.notes}
+                            viewNoteFunction={this.viewNote}
+                            showNoteCreator={this.state.creatingNote}
+                        />
                     </div>
                 </div>
             </div>
