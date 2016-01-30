@@ -8,9 +8,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server/index.js",
-    "start-dev": "webpack-dev-server --progress --colors --content-base public/",
+    "start-dev": "webpack-dev-server --content-base public/ --progress --colors --config webpack.config.dev.js",
     "lint": "eslint --ext .jsx src",
-    "build-webpack": "webpack -p --progress --colors --config webpack.config.js",
+    "build-webpack": "webpack -p --progress --colors --config webpack.config.prod.js",
     "test-client": "karma start",
     "test-client-watch": "karma start --singleRun false --auto-watch"
   },
