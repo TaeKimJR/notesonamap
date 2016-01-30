@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "indent": [2, 4, { "SwitchCase": 1 }],
+    "react/jsx-indent-props": [2, 4],
+    "react/prop-types": [2, { "ignore": ["children"] }],
+    "new-cap": [2, {"capIsNewExceptions": ["CSSModules"]}]
+  },
+  "ecmaFeatures": {
+    "classes": true,
+    "modules": true,
+    "spread": true
+  }
+}
