@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 
-const APP_PORT = 8000;
+const APP_PORT = process.env.PORT || 8000;
 
 const server = express();
 

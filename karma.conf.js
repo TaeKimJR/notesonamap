@@ -17,7 +17,7 @@ module.exports = function (config) {
             module: {
                 loaders: [
                     {
-                        test: /\.(js)?$/,
+                        test: /\.(js|jsx)?$/,
                         include: /tests\/client/,
                         loader: 'babel-loader'
                     },
