@@ -12,29 +12,13 @@ import NotesView from './pageComponents/notesView/notesView.jsx';
 class App extends React.Component {
     constructor() {
         super();
-        bindComponentFunction.call(this, 'viewNote');
+        bindComponentFunction.call(this, 'viewNote', 'addNote');
 
         // MOCKED DATA
         const notes = [
             {
                 id: 1,
                 text: 'THIS IS SOME TEXT1'
-            },
-            {
-                id: 2,
-                text: 'THIS IS SOME TEXT2'
-            },
-            {
-                id: 3,
-                text: 'THIS IS SOME TEXT3'
-            },
-            {
-                id: 4,
-                text: 'THIS IS SOME TEXT4'
-            },
-            {
-                id: 5,
-                text: 'THIS IS SOME TEXT5'
             }
         ];
 
@@ -43,18 +27,28 @@ class App extends React.Component {
         };
     }
 
+    addNote(text) {
+        const newNote = {
+            id: 9,
+            text
+        };
+
+        this.setState({
+            notes: this.state.notes.concat([newNote])
+        });
+    }
+
     viewNote(noteId) {
-        console.log(noteId);
         const foundNote = _.find(this.state.notes, (note) => {
             return note.id === noteId;
         });
-        console.log(foundNote.text);
     }
 
     render() {
         return (
             <div styleName="app-container">
                 <div styleName="header-container">
+                    <button onClick={this.addNote.bind(null, 'RAWR')}> TEST: Add Note </button>
                     <Header />
                 </div>
                 <div styleName="app-content-container">
