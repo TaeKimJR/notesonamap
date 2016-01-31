@@ -11,7 +11,7 @@ class NoteListItem extends React.Component {
                     src="images/point.png"
                     onClick={ this.props.viewNoteFunction.bind(null, this.props.note.id) }
                 />
-                <div styleName="noteText">{ this.props.note.text }</div>
+                <div styleName="noteText"><pre>{ this.props.note.text }</pre></div>
             </div>
         );
     }

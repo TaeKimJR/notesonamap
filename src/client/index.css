@@ -24,6 +24,8 @@
 }
 
 .notesView-container {
+    display: flex;
+    flex-direction: column;
     width: 25rem;
     border: 1px solid black;
 }
@@ -50,5 +52,6 @@
 }
 
 .notes-list {
-
+    flex: 2;
+    overflow-y: auto;
 }

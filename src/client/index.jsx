@@ -19,7 +19,8 @@ class App extends React.Component {
         const notes = [
             {
                 id: 1,
-                text: 'THIS IS SOME TEXT1'
+                text: 'THIS IS SOME TEXT1',
+                position: [51.505, -0.09]
             }
         ];
 
@@ -44,7 +45,8 @@ class App extends React.Component {
     addNote(text) {
         const newNote = {
             id: 9,
-            text
+            text,
+            position: [70, -1]
         };
 
         this.closeNoteCreator();
@@ -70,7 +72,7 @@ class App extends React.Component {
                 <div styleName="app-content-container">
                     <div styleName="mapView-container">
                         <button onClick={this.openNoteCreator}> TEST: Open Note Creator </button>
-                        <MapView />
+                        <MapView notes={this.state.notes} />
                     </div>
                     <div styleName="notesView-container">
                         {
