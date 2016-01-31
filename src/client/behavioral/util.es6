@@ -7,3 +7,7 @@ export function bindComponentFunction(...methods) {
         throw new Error('Define context when using bindComponentFunction (call || apply)');
     }
 }
+
+export function isUndefined(toBeChecked) {
+    return (typeof toBeChecked === 'undefined');
+}

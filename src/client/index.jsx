@@ -19,39 +19,46 @@ class App extends React.Component {
         const notes = [
             {
                 id: 1,
-                text: 'THIS IS SOME TEXT1',
-                position: [51.505, -0.09]
+                text: 'HELLO WORLD',
+                position: [0, 0]
             }
         ];
 
         this.state = {
             notes,
+            temporaryNote: null,
             creatingNote: false
         };
     }
 
-    openNoteCreator() {
+    openNoteCreator(markerLayer) {
+        const temporaryNote = {
+            id: -1,
+            position: markerLayer.getLatLng()
+        };
         this.setState({
+            temporaryNote,
             creatingNote: true
         });
     }
 
     closeNoteCreator() {
         this.setState({
+            temporaryNote: null,
             creatingNote: false
         });
     }
 
     addNote(text) {
-        const newNote = {
-            id: 9,
-            text,
-            position: [70, -1]
-        };
+        const updatedNote = this.state.temporaryNote;
+        updatedNote.text = text;
+        updatedNote.id = 2;
+
+        // TODO: call to backend to add note
 
         this.closeNoteCreator();
         this.setState({
-            notes: this.state.notes.concat([newNote])
+            notes: this.state.notes.concat([updatedNote])
         });
     }
 
@@ -60,7 +67,9 @@ class App extends React.Component {
             return note.id === noteId;
         });
 
-        console.log(foundNote.text);
+        this.setState({
+            center: foundNote.position
+        });
     }
 
     render() {
@@ -71,8 +80,15 @@ class App extends React.Component {
                 </div>
                 <div styleName="app-content-container">
                     <div styleName="mapView-container">
-                        <button onClick={this.openNoteCreator}> TEST: Open Note Creator </button>
-                        <MapView notes={this.state.notes} />
+                        <MapView
+                            bounds={this.state.bounds}
+                            notes={
+                                this.state.creatingNote ?
+                                this.state.notes.concat([this.state.temporaryNote]) :
+                                this.state.notes
+                            }
+                            onMarkerCreate={this.openNoteCreator}
+                        />
                     </div>
                     <div styleName="notesView-container">
                         {

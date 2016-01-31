@@ -2,24 +2,36 @@ import React from 'react';
 import CSSModules from 'react-css-modules';
 import styles from './mapView.css';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import DrawControl from './drawControl.jsx';
 
 
 class MapView extends React.Component {
+    // TODO: default props?
     render() {
-        const position = [51.505, -0.09];
         return (
-            <Map styleName="map" center={position} zoom={13}>
+            <Map styleName="map" center={[0, 0]} zoom={2} minZoom={2}>
                 <TileLayer
                     url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+                />
+                <DrawControl
+                    polygon={false}
+                    rectangle={false}
+                    polyline={false}
+                    circle={false}
+                    position="topright"
+                    onCreateFunction={this.props.onMarkerCreate}
                 />
                 {
                     this.props.notes.map((note) => {
                         return (
                             <Marker key={note.id} position={note.position}>
-                                <Popup>
-                                    <pre>{note.text}</pre>
-                                </Popup>
+                                {
+                                    note.id !== -1 &&
+                                    <Popup>
+                                        <pre>{note.text}</pre>
+                                    </Popup>
+                                }
                             </Marker>
                         );
                     })
@@ -30,7 +42,9 @@ class MapView extends React.Component {
 }
 
 MapView.propTypes = {
-    notes: React.PropTypes.array.isRequired
+    bounds: React.PropTypes.array,
+    notes: React.PropTypes.array.isRequired,
+    onMarkerCreate: React.PropTypes.func.isRequired
 };
 
 export default CSSModules(MapView, styles);
