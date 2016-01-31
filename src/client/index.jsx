@@ -6,13 +6,13 @@ import styles from './index.css';
 import { bindComponentFunction } from './behavioral/util.es6';
 import Header from './pageComponents/header/header.jsx';
 import MapView from './pageComponents/mapView/mapView.jsx';
-import NotesView from './pageComponents/notesView/notesView.jsx';
+import NoteListItem from './pageComponents/notesView/noteListItem.jsx';
 
 
 class App extends React.Component {
     constructor() {
         super();
-        bindComponentFunction.call(this, 'viewNote', 'addNote', 'openNoteCreator');
+        bindComponentFunction.call(this, 'viewNote', 'addNote', 'openNoteCreator', 'closeNoteCreator');
 
         // MOCKED DATA
         const notes = [
@@ -31,6 +31,12 @@ class App extends React.Component {
     openNoteCreator() {
         this.setState({
             creatingNote: true
+        });
+    }
+
+    closeNoteCreator() {
+        this.setState({
+            creatingNote: false
         });
     }
 
@@ -66,11 +72,26 @@ class App extends React.Component {
                         <MapView />
                     </div>
                     <div styleName="notesView-container">
-                        <NotesView
-                            notes={this.state.notes}
-                            viewNoteFunction={this.viewNote}
-                            showNoteCreator={this.state.creatingNote}
-                        />
+                        {
+                            this.state.creatingNote &&
+                            <div styleName="note-creator">
+                                RAWR
+                            </div>
+                        }
+
+                        <div styleName="notes-list">
+                            {
+                                this.state.notes.map((note) => {
+                                    return (
+                                        <NoteListItem
+                                            key={note.id}
+                                            note={note}
+                                            viewNoteFunction={this.viewNote.bind(null, note.id)}
+                                        />
+                                    );
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
