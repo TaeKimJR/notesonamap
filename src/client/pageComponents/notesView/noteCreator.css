@@ -1,0 +1,22 @@
+.inputs-container {
+    padding: .5rem;
+}
+
+.input {
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+.text-area {
+    composes: input;
+
+    height: 10rem;
+}
+
+.note-it-button {
+    width: 100%;
+    border: 1px solid black;
+    padding: .7rem;
+
+    background-color: red;
+}

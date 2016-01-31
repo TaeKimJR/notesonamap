@@ -5,6 +5,8 @@
     height: 100%;
     margin: 0;
     padding: 0;
+
+    font-size: 1rem;
 }
 
 .header-container {
@@ -14,23 +16,37 @@
 .app-content-container {
     flex: 2;
     display: flex;
-
-    background-color: red;
 }
 
 .mapView-container {
     flex: 2;
-
-    background-color: green;
+    border: 1px solid black;
 }
 
 .notesView-container {
     width: 25rem;
-    background-color: purple;
+    border: 1px solid black;
 }
 
 .note-creator {
+}
 
+.close-button-container {
+    width: 100%;
+    padding: .5rem;
+}
+
+.close-button {
+    float: right;
+    border: none;
+
+    background: none;
+
+    cursor: pointer;
+}
+
+.form-container {
+    clear: both;
 }
 
 .notes-list {
