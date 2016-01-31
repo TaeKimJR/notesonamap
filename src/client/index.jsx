@@ -16,17 +16,8 @@ class App extends React.Component {
         bindComponentFunction.call(this, 'viewNote', 'addNote', 'openNoteCreator',
             'closeNoteCreator');
 
-        // MOCKED DATA
-        const notes = [
-            {
-                id: 1,
-                text: 'THIS IS A NOTE',
-                position: [0, 0]
-            }
-        ];
-
         this.state = {
-            notes,
+            notes: [],
             temporaryNote: null,
             creatingNote: false
         };
@@ -34,6 +25,15 @@ class App extends React.Component {
         this.setMapRef = (ref) => {
             this.map = ref;
         };
+    }
+
+    componentDidMount() {
+        fetch('/api/notes').then(res => res.json())
+            .then((res) => {
+                this.setState({
+                    notes: res.notes
+                });
+            });
     }
 
     openNoteCreator(markerLayer) {
@@ -59,12 +59,19 @@ class App extends React.Component {
         updatedNote.text = text;
         updatedNote.id = 2;
 
-        // TODO: call to backend to add note
-
-        this.closeNoteCreator();
-        this.setState({
-            notes: this.state.notes.concat([updatedNote])
-        });
+        fetch('/api/notes/add', {
+            method: 'post',
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify(updatedNote)
+        }).then(res => res.json())
+            .then((res) => {
+                this.closeNoteCreator();
+                this.setState({
+                    notes: this.state.notes.concat([res])
+                });
+            });
     }
 
     viewNote(noteId) {
