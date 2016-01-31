@@ -31,7 +31,7 @@ class App extends React.Component {
         fetch('/api/notes').then(res => res.json())
             .then((res) => {
                 this.setState({
-                    notes: res.notes
+                    notes: res
                 });
             });
     }

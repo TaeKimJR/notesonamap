@@ -4,26 +4,29 @@ import bodyParser from 'body-parser';
 
 const APP_PORT = process.env.PORT || 8000;
 
+/* Cached Data*/
+let cachedNotes = [
+    {
+        id: 1,
+        text: 'This is a Note',
+        position: [0, 0]
+    }
+];
+let nextID = 2;
+
 const server = express();
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 
 server.use(express.static(path.resolve(__dirname, '../../public')));
 server.get('/api/notes', (req, res) => {
-    res.send({
-        notes: [
-            {
-                id: 1,
-                text: 'HELLO WORLD',
-                position: [0, 0]
-            }
-        ]
-    });
+    res.send(cachedNotes);
 });
 
 server.post('/api/notes/add', (req, res) => {
     const newNote = req.body;
-    newNote.id = 2;
+    newNote.id = nextID++;
+    cachedNotes = cachedNotes.concat([newNote]);
     res.send(newNote);
 });
 
