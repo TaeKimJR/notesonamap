@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CSSModules from 'react-css-modules';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import _ from 'lodash';
 import styles from './index.css';
 import { bindComponentFunction } from './behavioral/util.es6';
 import Header from './pageComponents/header/header.jsx';
-import MapView from './pageComponents/mapView/mapView.jsx';
+import DrawControl from './pageComponents/mapView/drawControl.jsx';
 import NoteListItem from './pageComponents/notesView/noteListItem.jsx';
 import NoteCreator from './pageComponents/notesView/noteCreator.jsx';
 
@@ -19,7 +20,7 @@ class App extends React.Component {
         const notes = [
             {
                 id: 1,
-                text: 'HELLO WORLD',
+                text: 'THIS IS A NOTE',
                 position: [0, 0]
             }
         ];
@@ -28,6 +29,10 @@ class App extends React.Component {
             notes,
             temporaryNote: null,
             creatingNote: false
+        };
+
+        this.setMapRef = (ref) => {
+            this.map = ref;
         };
     }
 
@@ -67,12 +72,16 @@ class App extends React.Component {
             return note.id === noteId;
         });
 
-        this.setState({
-            center: foundNote.position
-        });
+        const map = this.map.getLeafletElement();
+        const cM = map.project(foundNote.position);
+        map.setView(map.unproject(cM), 8, { animate: true });
     }
 
     render() {
+        const shownMarkers = this.state.creatingNote ?
+            this.state.notes.concat([this.state.temporaryNote]) :
+            this.state.notes;
+
         return (
             <div styleName="app-container">
                 <div styleName="header-container">
@@ -80,15 +89,41 @@ class App extends React.Component {
                 </div>
                 <div styleName="app-content-container">
                     <div styleName="mapView-container">
-                        <MapView
-                            bounds={this.state.bounds}
-                            notes={
-                                this.state.creatingNote ?
-                                this.state.notes.concat([this.state.temporaryNote]) :
-                                this.state.notes
+                        <Map
+                            styleName="map"
+                            ref={this.setMapRef}
+                            center={[0, 0]}
+                            zoom={2}
+                            minZoom={2}
+                            maxBounds={[[-100, 200], [100, -200]]}
+                        >
+                            <TileLayer
+                                url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                                attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+                            />
+                            <DrawControl
+                                polygon={false}
+                                rectangle={false}
+                                polyline={false}
+                                circle={false}
+                                position="topright"
+                                onCreateFunction={this.openNoteCreator}
+                            />
+                            {
+                                shownMarkers.map((note) => {
+                                    return (
+                                        <Marker key={note.id} position={note.position}>
+                                            {
+                                                note.id !== -1 &&
+                                                <Popup>
+                                                    <pre>{note.text}</pre>
+                                                </Popup>
+                                            }
+                                        </Marker>
+                                    );
+                                })
                             }
-                            onMarkerCreate={this.openNoteCreator}
-                        />
+                        </Map>
                     </div>
                     <div styleName="notesView-container">
                         {
